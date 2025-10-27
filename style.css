@@ -11,6 +11,22 @@ body {
     line-height: 1.6;
 }
 
+
+.col{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.row{
+    display: block;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+
 #page {
     max-width: 1200px;
     margin: 0 auto;
