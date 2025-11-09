@@ -3,31 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Рак - Главная</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div id="page">
         <header>
-                <img id="logo" src="images/ico_listrock.jpeg" alt="ListRock">
-                <h1>ListRock</h1>
+            <img id="logo" src="images/ico_listrock.jpeg" alt="ListRock">
+            <h1>Combat pass</h1>
         </header>
 
         <main>
             <div class="content-block">
                 <span>Title</span>
                 <div class="row">
-                    <input type="text" required>
+                    <input type="text" id="name_task" required placeholder="Введите задачу">
                     <button id="add">Добавить новую задачу</button>
                 </div>
             </div>
 
             <div class="content-block">
+                <div class="sort-controls">
+                    <label for="sort-select">Сортировка:</label>
+                    <select id="sort-select">
+                        <option value="time-desc">По времени (новые снизу)</option>
+                        <option value="time-asc">По времени (новые сверху)</option>
+                        <option value="alpha-asc">По алфавиту (А → Я)</option>
+                        <option value="alpha-desc">По алфавиту (Я → А)</option>
+                        <option value="completed-first">Сначала выполненные</option>
+                        <option value="active-first">Сначала невыполненные</option>
+                    </select>
+                </div>
                 <div class="my_list"></div>
             </div>
         </main>
-        
+
         <footer>
             <p>Котенко Игорь Анатольевич 2251</p>
             <div class="media_container">
@@ -44,5 +54,6 @@
             <p>Университет Дубна 2025</p>
         </footer>
     </div>
+    <script src="code.js"></script>
 </body>
 </html>

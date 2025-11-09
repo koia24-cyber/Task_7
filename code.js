@@ -1,0 +1,1 @@
+const task_name = document.getElementById("name_task");
