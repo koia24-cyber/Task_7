@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -11,21 +11,18 @@ body {
     line-height: 1.6;
 }
 
-
-.col{
+.col {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.row{
-    display: block;
+.row {
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 10px;
 }
-
-
 
 #page {
     max-width: 1200px;
@@ -37,7 +34,6 @@ body {
 header {
     background: linear-gradient(135deg, #f8c8dc 0%, #ffb6c1 100%);
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-around;
     padding: 20px;
@@ -50,30 +46,6 @@ header img {
     border-radius: 10px;
     border: 3px solid #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-nav {
-    background-color: #ffb6c1;
-    display: flex;
-    justify-content: center;
-    padding: 15px;
-    gap: 20px;
-}
-
-nav a {
-    color: #8a3a6b;
-    text-decoration: none;
-    padding: 10px 25px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-nav a:hover {
-    background-color: #fff;
-    color: #d94b7e;
-    border: 2px solid #d94b7e;
 }
 
 main {
@@ -91,26 +63,54 @@ main {
     box-shadow: 0 0 10px rgba(219, 112, 147, 0.1);
 }
 
-.content-block h2 {
+.sort-controls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sort-controls label {
+    font-weight: bold;
     color: #d94b7e;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px dashed #ffd1dc;
+    margin-right: 10px;
 }
 
-.content-block h3 {
-    color: #db7093;
-    margin: 15px 0 10px;
+#sort-select {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 2px solid #ffb6c1;
+    background: white;
+    color: #8a3a6b;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
 }
 
-.content-block p {
-    margin-bottom: 15px;
-    line-height: 1.8;
-    color: #666;
+#sort-select:focus {
+    border-color: #d94b7e;
 }
 
-.content-block strong {
-    color: #d94b7e;
+/* Стили для задач */
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ffd1dc;
+    gap: 10px;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item button {
+    background: #ff6b81;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
 }
 
 footer {
@@ -135,7 +135,6 @@ footer {
     height: 80px;
     border-radius: 50%;
     border: 2px solid #fff;
-    /* трансформация с задержкой */
     transition: transform 0.3s ease;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
