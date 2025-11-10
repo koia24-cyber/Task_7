@@ -92,6 +92,10 @@ function displayTasks() {
 
         const taskEl = document.createElement("div");
         taskEl.className = "task-item";
+        taskEl.style.display = "flex";
+        taskEl.style.alignItems = "center";
+        taskEl.style.gap = "8px";
+        taskEl.style.padding = "6px 0";
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -108,15 +112,17 @@ function displayTasks() {
             taskText.style.textDecoration = "line-through";
             taskText.style.color = "#999";
         }
+        
+        taskText.style.flex = "1";//кнопки на правом краю
 
         const input_edit = document.createElement("input");
         input_edit.type = "text";
         input_edit.value = task.text;
-        input_edit.style.visibility = "hidden";
+        input_edit.style.display = "none";
         input_edit.style.border = "1px solid #ccc";
-        input_edit.style.padding = "2px 4px";
-        input_edit.style.marginLeft = "6px";
-        input_edit.style.width = "100px";
+        input_edit.style.padding = "2px 6px";
+        input_edit.style.width = "120px";
+        input_edit.style.borderRadius = "4px";
 
         input_edit.addEventListener("keydown", e => {
             if (e.key === "Enter") {
@@ -126,13 +132,12 @@ function displayTasks() {
                     saveTasks();
                 }
                 taskText.textContent = tasks[realIndex].text;
-                taskText.style.visibility = "visible";
-                input_edit.style.visibility = "hidden";
+                taskText.style.display = "inline";
+                input_edit.style.display = "none";
             } else if (e.key === "Escape") {
                 input_edit.value = tasks[realIndex].text;
-                taskText.style.visibility = "visible";
-                input_edit.value = "";
-                input_edit.style.visibility = "hidden";
+                taskText.style.display = "inline";
+                input_edit.style.display = "none";
             }
         });
 
@@ -143,21 +148,38 @@ function displayTasks() {
                 saveTasks();
             }
             taskText.textContent = tasks[realIndex].text;
-            taskText.style.visibility = "visible";
-            input_edit.style.visibility = "hidden";
+            taskText.style.display = "inline";
+            input_edit.style.display = "none";
         });
 
         const btnedit = document.createElement("button");
-        btnedit.textContent = "edit";
+        btnedit.textContent = "✎";
+        btnedit.style.width = "24px";
+        btnedit.style.height = "24px";
+        btnedit.style.borderRadius = "50%";
+        btnedit.style.border = "1px solid #aaa";
+        btnedit.style.background = "grey";
+        btnedit.style.cursor = "pointer";
+        btnedit.style.fontSize = "12px";
+        
         btnedit.addEventListener("click", () => {
             input_edit.value = tasks[realIndex].text;
-            input_edit.style.visibility = "visible";
-            taskText.style.visibility = "hidden";
+            taskText.style.display = "none";
+            input_edit.style.display = "inline-block";
             input_edit.focus();
         });
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "✕";
+        deleteBtn.style.width = "24px";
+        deleteBtn.style.height = "24px";
+        deleteBtn.style.borderRadius = "50%";
+        deleteBtn.style.border = "1px solid #ff6b6b";
+        deleteBtn.style.background = "white";
+        deleteBtn.style.color = "#ff6b6b";
+        deleteBtn.style.cursor = "pointer";
+        deleteBtn.style.fontSize = "14px";
+        
         deleteBtn.addEventListener("click", () => {
             tasks.splice(realIndex, 1);
             saveTasks();
