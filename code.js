@@ -52,7 +52,7 @@ filterBar.style.justifyContent = "center";
     filterBar.appendChild(btn);
 });
 
-const contentBlock = document.querySelector(".content-block:last-of-type");//для вставки объекта вверх блока списка
+const contentBlock = document.querySelector(".content-block:last-of-type");
 contentBlock.insertBefore(filterBar, taskList);
 
 function sortTasks(list) {
@@ -74,8 +74,6 @@ sortSelect.addEventListener("change", () => {
 });
 
 function displayTasks() {
-    const originalTasks = tasks;
-
     let filtered = tasks;
     if (currentFilter === "active") filtered = tasks.filter(t => !t.completed);
     else if (currentFilter === "completed") filtered = tasks.filter(t => t.completed);
@@ -111,6 +109,53 @@ function displayTasks() {
             taskText.style.color = "#999";
         }
 
+        const input_edit = document.createElement("input");
+        input_edit.type = "text";
+        input_edit.value = task.text;
+        input_edit.style.visibility = "hidden";
+        input_edit.style.border = "1px solid #ccc";
+        input_edit.style.padding = "2px 4px";
+        input_edit.style.marginLeft = "6px";
+        input_edit.style.width = "100px";
+
+        input_edit.addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                const newText = input_edit.value.trim();
+                if (newText !== "") {
+                    tasks[realIndex].text = newText;
+                    saveTasks();
+                }
+                taskText.textContent = tasks[realIndex].text;
+                taskText.style.visibility = "visible";
+                input_edit.style.visibility = "hidden";
+            } else if (e.key === "Escape") {
+                input_edit.value = tasks[realIndex].text;
+                taskText.style.visibility = "visible";
+                input_edit.value = "";
+                input_edit.style.visibility = "hidden";
+            }
+        });
+
+        input_edit.addEventListener("blur", () => {
+            const newText = input_edit.value.trim();
+            if (newText !== "") {
+                tasks[realIndex].text = newText;
+                saveTasks();
+            }
+            taskText.textContent = tasks[realIndex].text;
+            taskText.style.visibility = "visible";
+            input_edit.style.visibility = "hidden";
+        });
+
+        const btnedit = document.createElement("button");
+        btnedit.textContent = "edit";
+        btnedit.addEventListener("click", () => {
+            input_edit.value = tasks[realIndex].text;
+            input_edit.style.visibility = "visible";
+            taskText.style.visibility = "hidden";
+            input_edit.focus();
+        });
+
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "✕";
         deleteBtn.addEventListener("click", () => {
@@ -119,9 +164,9 @@ function displayTasks() {
             displayTasks();
         });
 
-        taskEl.append(checkbox, taskText, deleteBtn);
+        taskEl.append(checkbox, taskText, input_edit, btnedit, deleteBtn);
         taskList.appendChild(taskEl);
     });
 }
 
-displayTasks();//для загрузки списка при открытии страницы
+displayTasks();
