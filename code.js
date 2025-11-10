@@ -122,6 +122,7 @@ function displayTasks() {
         input_edit.style.color = "white";
         input_edit.style.border = "1px solid #ccc";
         input_edit.style.padding = "2px 6px";
+        input_edit.style.color = "black";
         input_edit.style.width = "120px";
         input_edit.style.borderRadius = "4px";
 
