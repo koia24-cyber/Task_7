@@ -10,7 +10,14 @@ body {
     color: #333;
     line-height: 1.6;
 }
-
+#add{
+    border-radius: 5px;
+    padding: 7px 5px;
+    background-color: #c377a6;
+}
+#add:hover{
+    cursor: pointer;
+}
 .col {
     display: flex;
     flex-direction: column;
