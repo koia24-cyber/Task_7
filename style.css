@@ -108,11 +108,14 @@ main {
 .task-item:last-child {
     border-bottom: none;
 }
+.k#c377a6{
+    color: #c377a6;
+}
 
 .task-item button {
     background: #ff6b81;
-    color: #c377a6;
     border: none;
+    color:white;
     border-radius: 50%;
     width: 24px;
     height: 24px;

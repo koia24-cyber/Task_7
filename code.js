@@ -112,13 +112,14 @@ function displayTasks() {
             taskText.style.textDecoration = "line-through";
             taskText.style.color = "#999";
         }
-        
+
         taskText.style.flex = "1";//кнопки на правом краю
 
         const input_edit = document.createElement("input");
         input_edit.type = "text";
         input_edit.value = task.text;
         input_edit.style.display = "none";
+        input_edit.style.color = "white";
         input_edit.style.border = "1px solid #ccc";
         input_edit.style.padding = "2px 6px";
         input_edit.style.width = "120px";
