@@ -5,10 +5,14 @@ const sortSelect = document.getElementById("sort-select");
 
 let currentFilter = "all";
 let currentSort = "time-desc";
+
+
+
+//// JSON как еа паре
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function addTask() {
