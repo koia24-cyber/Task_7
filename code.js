@@ -18,6 +18,7 @@ function addTask() {
     saveTasks();
     task_name.value = "";
     displayTasks();
+    updateLocalStorage();
 }
 
 addButton.addEventListener("click", addTask);
@@ -52,6 +53,15 @@ filterBar.style.justifyContent = "center";
     filterBar.appendChild(btn);
 });
 
+//////////////////////////////////////////////////////////////////////
+!localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'));
+
+const updateLocalStorage = () => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+//////////////////////////////////////////////////////////////////////
+
+
 const contentBlock = document.querySelector(".content-block:last-of-type");
 contentBlock.insertBefore(filterBar, taskList);
 
@@ -71,6 +81,7 @@ function sortTasks(list) {
 sortSelect.addEventListener("change", () => {
     currentSort = sortSelect.value;
     displayTasks();
+    updateLocalStorage();
 });
 
 function displayTasks() {
@@ -103,7 +114,8 @@ function displayTasks() {
         checkbox.addEventListener("change", () => {
             tasks[realIndex].completed = checkbox.checked;
             saveTasks();
-            displayTasks();
+            displayTasks();    
+            updateLocalStorage();
         });
 
         const taskText = document.createElement("span");
@@ -186,6 +198,7 @@ function displayTasks() {
             tasks.splice(realIndex, 1);
             saveTasks();
             displayTasks();
+            updateLocalStorage();
         });
 
         taskEl.append(checkbox, taskText, input_edit, btnedit, deleteBtn);
@@ -194,3 +207,4 @@ function displayTasks() {
 }
 
 displayTasks();
+updateLocalStorage();
