@@ -1,28 +1,30 @@
 const task_name = document.getElementById("name_task");
 const addButton = document.getElementById("add");
-const taskList = document.querySelector(".my_list");
+const tasks_block = document.getElementById("tasks_block");
+const eduBlock = document.getElementById("tasks_edu");
+const homeBlock = document.getElementById("tasks_home");
+const workBlock = document.getElementById("tasks_work");
+
 const sortSelect = document.getElementById("sort-select");
 
 let currentFilter = "all";
 let currentSort = "time-desc";
+let draggedIndex = -1;
+let draggedCategory = null;
 
-
-
-//// JSON как еа паре
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function saveTasks() {
-    // localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function addTask() {
     const text = task_name.value.trim();
     if (text === "") return;
-    tasks.push({ text, completed: false });
+    tasks.push({ text, completed: false, type: "edu" });
     saveTasks();
     task_name.value = "";
     displayTasks();
-    updateLocalStorage();
 }
 
 addButton.addEventListener("click", addTask);
@@ -48,7 +50,10 @@ filterBar.style.justifyContent = "center";
     btn.style.transition = "all 0.2s";
     btn.addEventListener("click", () => {
         currentFilter = filter;
-        document.querySelectorAll(".filter-btn").forEach(b => b.style.background = "white");
+        document.querySelectorAll(".filter-btn").forEach(b => {
+            b.style.background = "white";
+            b.style.color = "#8a3a6b";
+        });
         btn.style.background = "#ffb6c1";
         btn.style.color = "white";
         displayTasks();
@@ -57,17 +62,8 @@ filterBar.style.justifyContent = "center";
     filterBar.appendChild(btn);
 });
 
-//////////////////////////////////////////////////////////////////////
-!localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'));
-
-const updateLocalStorage = () => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-//////////////////////////////////////////////////////////////////////
-
-
 const contentBlock = document.querySelector(".content-block:last-of-type");
-contentBlock.insertBefore(filterBar, taskList);
+contentBlock.insertBefore(filterBar, document.querySelector(".my_list"));
 
 function sortTasks(list) {
     const copy = [...list];
@@ -85,8 +81,16 @@ function sortTasks(list) {
 sortSelect.addEventListener("change", () => {
     currentSort = sortSelect.value;
     displayTasks();
-    updateLocalStorage();
 });
+
+function getCategoryBlock(category) {
+    switch(category) {
+        case "edu": return eduBlock;
+        case "home": return homeBlock;
+        case "work": return workBlock;
+        default: return eduBlock;
+    }
+}
 
 function displayTasks() {
     let filtered = tasks;
@@ -95,22 +99,26 @@ function displayTasks() {
 
     const sorted = sortTasks(filtered);
 
-    taskList.innerHTML = "";
-    if (sorted.length === 0) {
-        taskList.innerHTML = `<p style="text-align:center;color:#999;">Нет задач</p>`;
-        return;
-    }
+    eduBlock.innerHTML = "📚 Учёба";
+    homeBlock.innerHTML = "🏠 Дом";
+    workBlock.innerHTML = "💼 Работа";
 
-    sorted.forEach(task => {
+    sorted.forEach((task, idx) => {
         const realIndex = tasks.findIndex(t => t === task);
         if (realIndex === -1) return;
 
         const taskEl = document.createElement("div");
+        taskEl.draggable = true;
+        taskEl.dataset.index = realIndex;
+        taskEl.dataset.category = task.type || "edu";
+
         taskEl.className = "task-item";
         taskEl.style.display = "flex";
         taskEl.style.alignItems = "center";
         taskEl.style.gap = "8px";
-        taskEl.style.padding = "6px 0";
+        taskEl.style.padding = "6px 10px";
+        taskEl.style.margin = "4px 0";
+        taskEl.style.borderRadius = "6px";
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -118,8 +126,7 @@ function displayTasks() {
         checkbox.addEventListener("change", () => {
             tasks[realIndex].completed = checkbox.checked;
             saveTasks();
-            displayTasks();    
-            updateLocalStorage();
+            displayTasks();
         });
 
         const taskText = document.createElement("span");
@@ -128,14 +135,12 @@ function displayTasks() {
             taskText.style.textDecoration = "line-through";
             taskText.style.color = "#999";
         }
-
-        taskText.style.flex = "1";//кнопки на правом краю
+        taskText.style.flex = "1";
 
         const input_edit = document.createElement("input");
         input_edit.type = "text";
         input_edit.value = task.text;
         input_edit.style.display = "none";
-        input_edit.style.color = "white";
         input_edit.style.border = "1px solid #ccc";
         input_edit.style.padding = "2px 6px";
         input_edit.style.color = "black";
@@ -151,6 +156,7 @@ function displayTasks() {
                 }
                 taskText.textContent = tasks[realIndex].text;
                 taskText.style.display = "inline";
+                input_edit.style.display = "inline-block";
                 input_edit.style.display = "none";
             } else if (e.key === "Escape") {
                 input_edit.value = tasks[realIndex].text;
@@ -202,13 +208,61 @@ function displayTasks() {
             tasks.splice(realIndex, 1);
             saveTasks();
             displayTasks();
-            updateLocalStorage();
         });
 
         taskEl.append(checkbox, taskText, input_edit, btnedit, deleteBtn);
-        taskList.appendChild(taskEl);
+
+        const category = task.type || "edu";
+        const targetBlock = getCategoryBlock(category);
+        targetBlock.appendChild(taskEl);
     });
 }
 
+tasks_block.addEventListener("dragstart", (evt) => {
+    if (!evt.target.classList.contains("task-item")) return;
+    draggedIndex = parseInt(evt.target.dataset.index);
+    draggedCategory = evt.target.dataset.category;
+    evt.target.classList.add("selected");
+    evt.dataTransfer.effectAllowed = "move";
+});
+
+tasks_block.addEventListener("dragover", (evt) => {
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = "move";
+});
+
+tasks_block.addEventListener("dragenter", (evt) => {
+    if (evt.target.classList.contains("block_tasks")) {
+        evt.target.style.backgroundColor = "#ffccdd";
+    }
+});
+
+tasks_block.addEventListener("dragleave", (evt) => {
+    if (evt.target.classList.contains("block_tasks")) {
+        evt.target.style.backgroundColor = "";
+    }
+});
+
+tasks_block.addEventListener("drop", (evt) => {
+    evt.preventDefault();
+    if (!evt.target.classList.contains("block_tasks")) return;
+
+    const targetCategory = evt.target.dataset.category;
+    if (draggedIndex !== -1 && targetCategory && tasks[draggedIndex]) {
+        tasks[draggedIndex].type = targetCategory;
+        saveTasks();
+    }
+
+    evt.target.style.backgroundColor = "";
+    displayTasks();
+});
+
+tasks_block.addEventListener("dragend", (evt) => {
+    if (evt.target.classList.contains("task-item")) {
+        evt.target.classList.remove("selected");
+    }
+    draggedIndex = -1;
+    draggedCategory = null;
+});
+
 displayTasks();
-updateLocalStorage();

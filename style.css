@@ -18,6 +18,27 @@ body {
 #add:hover{
     cursor: pointer;
 }
+
+
+.task-item.dragging {
+    opacity: 0.5;
+    transform: scale(1.02);
+    z-index: 1000;
+}
+
+.task-item.drag-over {
+    background-color: #ffe0e9;
+    border-left: 3px solid #ff6b81;
+    transition: background-color 0.2s;
+}
+
+.drop-placeholder {
+    height: 2px;
+    background-color: #ff6b81;
+    margin: 8px 0;
+}
+
+
 .col {
     display: flex;
     flex-direction: column;
@@ -111,6 +132,19 @@ main {
 .k#c377a6{
     color: #c377a6;
 }
+
+
+.selected{
+    background: #ff6b81;
+}
+
+.block_tasks{
+    margin: 10px 10px;
+    padding: 15px 15px;
+    background: rgb(196, 196, 196);
+    border-radius: 7px;
+}
+
 
 .task-item button {
     background: #ff6b81;
