@@ -21,7 +21,7 @@ function saveTasks() {
 function addTask() {
     const text = task_name.value.trim();
     if (text === "") return;
-    tasks.push({ text, completed: false, type: "edu" });
+    tasks.push({ text, completed: false, type: "edu", timestamp: Date.now()});
     saveTasks();
     task_name.value = "";
     displayTasks();
@@ -68,7 +68,7 @@ contentBlock.insertBefore(filterBar, document.querySelector(".my_list"));
 function sortTasks(list) {
     const copy = [...list];
     switch (currentSort) {
-        case "time-desc": return copy;
+         case "time-desc": return copy.sort((a, b) => a.timestamp - b.timestamp);
         case "time-asc": return copy.reverse();
         case "alpha-asc": return copy.sort((a, b) => a.text.localeCompare(b.text, 'ru'));
         case "alpha-desc": return copy.sort((a, b) => b.text.localeCompare(a.text, 'ru'));
@@ -99,9 +99,9 @@ function displayTasks() {
 
     const sorted = sortTasks(filtered);
 
-    eduBlock.innerHTML = "📚 Учёба";
-    homeBlock.innerHTML = "🏠 Дом";
-    workBlock.innerHTML = "💼 Работа";
+    eduBlock.innerHTML = "📚";
+    homeBlock.innerHTML = "🏠";
+    workBlock.innerHTML = "💼";
 
     sorted.forEach((task, idx) => {
         const realIndex = tasks.findIndex(t => t === task);
