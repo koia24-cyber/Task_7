@@ -68,7 +68,7 @@ contentBlock.insertBefore(filterBar, document.querySelector(".my_list"));
 function sortTasks(list) {
     const copy = [...list];
     switch (currentSort) {
-         case "time-desc": return copy.sort((a, b) => a.timestamp - b.timestamp);
+         case "time-desc": return copy.reverse();;
         case "time-asc": return copy.reverse();
         case "alpha-asc": return copy.sort((a, b) => a.text.localeCompare(b.text, 'ru'));
         case "alpha-desc": return copy.sort((a, b) => b.text.localeCompare(a.text, 'ru'));
