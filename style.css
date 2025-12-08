@@ -10,15 +10,20 @@ body {
     color: #333;
     line-height: 1.6;
 }
+
 #add{
-    border-radius: 5px;
-    padding: 7px 5px;
-    background-color: #c377a6;
+    border-radius: 15px;
+    border: solid rgb(255, 182, 193);
+    padding: 7px 10px;
+    color: white;
+    background-color: rgb(255, 182, 193);
 }
 #add:hover{
     cursor: pointer;
 }
-
+#name_task{
+    min-width: 500px;
+}
 
 .task-item.dragging {
     opacity: 0.5;
